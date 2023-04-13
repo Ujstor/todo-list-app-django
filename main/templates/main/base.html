@@ -39,15 +39,22 @@
 </head>
 <body>
     <div class="sidenav">
+        {% if user.is_authenticated %}
         <a href="/">Home</a>
         <a href="/create">Create</a>
-        <a href="/5">View</a>
+        <a href="/view">View</a>
+        <a href="/logout">Logout</a>
+        {% else %}
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+        {% endif %}
+
     </div>
 
     <div id="content" name="content" class="main">
 		<div class="row justify-content-center">
 			<div class="col-8">
-				<h1 class="mt-2">My Site</h1>
+				<h1 class="mt-2">To-Do Lists WebApp</h1>
 				<hr class="mt-0 mb-4">
                 {% if user.is_authenticated %}
                     {% block content %}
