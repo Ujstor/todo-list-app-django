@@ -49,12 +49,13 @@
 			<div class="col-8">
 				<h1 class="mt-2">My Site</h1>
 				<hr class="mt-0 mb-4">
-                {% if user.is_authenticated %}
-                    {% block content %}
-                    {% endblock %}
-                {% else %}
-                    <p>Login <a href="/login">Here</a></p>
-                {% endif %}
+                {% load crispy_forms_tags %}
+                <form method="post" class="form-group">
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <button type="submit" class="btn btn-success">Login</button>
+                    <p>Don't have an account? Create one <a href="/register">here</a></p>
+                </form>
 
 			</div>
 		</div>
