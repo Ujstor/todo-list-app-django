@@ -1,9 +1,14 @@
 {% extends "main/base.html" %}
 
-{% block title %}View{% endblock%}
+{% block title %}
+View
+{% endblock %}
 
 {% block content %}
-  {% for td in user.todolist.all %}
-    <p><a href="/{{td.id}}">{{td.name}}</a> </p>
-  {% endfor %}
+    <form method="POST" action="/delete/{{td.id}}" class="form-group">
+        {% csrf_token %}
+        {% for td in user.todolist.all %}
+	    <p><a href="/{{td.id}}" class="link-success">{{td.name}}</a> <button type="submit" name="delete" class="btn btn-danger">Remove</button></p>
+    </form>
+    {% endfor %}
 {% endblock %}

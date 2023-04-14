@@ -1,7 +1,8 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
 from .models import ToDoList, Item
 from .forms import CreateNewList
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 
@@ -12,7 +13,6 @@ def index(response, id):
     if response.user.todolist.all():
 
         if response.method == 'POST':
-            print(response.POST)
             if response.POST.get("save"):
                 for item in ls.item_set.all():
                     if response.POST.get("c" + str(item.id)) == "clicked":
@@ -54,3 +54,8 @@ def create(response):
 def view(response):
     return render(response, "main/view.html", {})
 
+@require_POST
+def delete(request, id):
+    ls = ToDoList.objects.get(id=id)
+    ls.delete()
+    return redirect("/")
