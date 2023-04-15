@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from .models import ToDoList, Item
 from .forms import CreateNewList
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -33,11 +34,12 @@ def index(response, id):
     return render(response, "main/view.html", {})
 
 
+@login_required
 def home(request):
-    num_lists = ToDoList.objects.count()
+    num_lists = ToDoList.objects.filter(user=request.user).count()
 
     items_per_list = []
-    for todolist in ToDoList.objects.all():
+    for todolist in ToDoList.objects.filter(user=request.user):
         num_items = Item.objects.filter(todolist=todolist).count()
         items_per_list.append({"todolist": todolist, "num_items": num_items})
 
