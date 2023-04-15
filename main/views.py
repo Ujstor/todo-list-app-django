@@ -33,8 +33,15 @@ def index(response, id):
     return render(response, "main/view.html", {})
 
 
-def home(response):
-    return render(response, "main/home.html", {})
+def home(request):
+    num_lists = ToDoList.objects.count()
+
+    items_per_list = []
+    for todolist in ToDoList.objects.all():
+        num_items = Item.objects.filter(todolist=todolist).count()
+        items_per_list.append({"todolist": todolist, "num_items": num_items})
+
+    return render(request, "main/home.html", {"num_lists": num_lists, "items_per_list": items_per_list})
 
 
 def create(response):
@@ -58,4 +65,4 @@ def view(response):
 def delete(request, id):
     ls = ToDoList.objects.get(id=id)
     ls.delete()
-    return redirect("/")
+    return redirect("/view")

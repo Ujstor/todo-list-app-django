@@ -1,12 +1,14 @@
 {% extends "register/base_reg.html" %}
 
 {% block title %}
-Login Here
+Login
 {% endblock %}
 
 {% load crispy_forms_tags %}
 
 {% block content %}
+	<h3 class="mt-2">Login</h3>
+    <hr class="mt-0 mb-4">
      <form method="post" class="from-group">
 	{% csrf_token %}
 	{{form|crispy}}

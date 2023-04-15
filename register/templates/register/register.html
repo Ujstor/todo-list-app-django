@@ -1,9 +1,11 @@
 {% extends "register/base_reg.html" %}
 
-{% block title %}Create an Account{% endblock %}
+{% block title %}Register{% endblock %}
 {% load crispy_forms_tags %}
 
 {% block content %}
+	<h3 class="mt-2">Register</h3>
+    <hr class="mt-0 mb-4">
     <form method="POST" class="form-group">
 	{% csrf_token %}
 	{{ form|crispy }}
