@@ -1,5 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.management.base import BaseCommand
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Create your models here.
 

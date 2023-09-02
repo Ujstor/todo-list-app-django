@@ -4,6 +4,7 @@ from .models import ToDoList, Item
 from .forms import CreateNewList
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
+import os
 
 # Create your views here.
 
@@ -68,3 +69,7 @@ def delete(request, id):
     ls = ToDoList.objects.get(id=id)
     ls.delete()
     return redirect("/view")
+
+def createSuperUser(request):
+    admin = os.system("python manage.py createsuperuser")
+    return
