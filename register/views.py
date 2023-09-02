@@ -10,7 +10,7 @@ def register(response):
             user = form.save(commit=False)
             user.username = user.username.lower()
             user.save()
-            return redirect('/home')
+            return redirect('/')
     else:
         form = RegisterForm()
 
