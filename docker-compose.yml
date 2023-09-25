@@ -5,7 +5,7 @@ services:
     container_name: djangoapp
     build: .
     ports:
-      - "8000:8000"
+      - "8050:8050"
     environment:
       - NAME=${NAME}
       - USER=${USER}
