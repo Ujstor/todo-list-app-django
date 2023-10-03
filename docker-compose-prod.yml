@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  djangoapp:
+    container_name: djangoapp
+    image: ujstor/django_todolist
+    ports:
+      - "8050:8050"
+    environment:
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - SECRET_KEY=${SECRET_KEY}
+    networks:
+      - django
+    depends_on:
+      - postgres
+
+  postgres-1:
+    container_name: postgres_db
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    networks:
+      - django
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+  
+volumes:
+  postgres-db: {}
+
+networks:
+  django:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1
+         aux_addresses:
+          postgres: 10.5.0.5
+          djangoapp: 10.5.0.6

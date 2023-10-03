@@ -1,5 +1,6 @@
 #!/bin/bash
-echo "Creater migations"
+echo "Create migations"
+sleep 5
 python manage.py makemigrations main
 echo "================================"
 
