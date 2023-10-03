@@ -20,6 +20,7 @@ services:
 
   postgres:
     container_name: postgres_db
+    hostname: postgres-1
     image: postgres
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
