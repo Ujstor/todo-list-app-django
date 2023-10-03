@@ -18,9 +18,8 @@ services:
     depends_on:
       - postgres
 
-  postgres:
+  postgres-1:
     container_name: postgres_db
-    hostname: postgres-1
     image: postgres
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
