@@ -13,6 +13,8 @@ services:
       - DB_HOST=${DB_HOST}
       - DB_PORT=${DB_PORT}
       - SECRET_KEY=${SECRET_KEY}
+    networks:
+      - django
     depends_on:
       - postgres
 
@@ -22,8 +24,21 @@ services:
     environment:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
+    networks:
+      - django
     volumes:
       - postgres-db:/var/lib/postgresql/data
   
 volumes:
   postgres-db: {}
+
+networks:
+  django:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1
+         aux_addresses:
+          postgres: 10.5.0.5
+          djangoapp: 10.5.0.6
