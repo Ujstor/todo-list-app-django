@@ -3,7 +3,7 @@ version: '3'
 services:
   djangoapp:
     container_name: djangoapp
-    image: ujstor/django_todolist
+    image: ujstor/django_todolist:1.0.0
     ports:
       - "8050:8050"
     environment:
