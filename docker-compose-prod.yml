@@ -16,7 +16,7 @@ services:
     networks:
       - django
     depends_on:
-      - postgres
+      - postgres-1
 
   postgres-1:
     container_name: postgres_db

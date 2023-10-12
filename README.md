@@ -78,7 +78,7 @@ image is automatically built and deployed through the Jenkins pipeline.
 ![](https://i.imgur.com/WVvnWzi.png)
 
 
-# Jenkins Pipeline for Dockerized Django To-Do List Application**
+# Jenkins Pipeline for Dockerized Django To-Do List Application
 
 This Jenkins pipeline is designed to automate the continuous integration and deployment process for a Dockerized Django To-Do List application. It consists of various stages that are executed based on specific conditions, primarily targeting the `master` branch. Here's a brief overview of the pipeline:
 
