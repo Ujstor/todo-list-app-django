@@ -2,27 +2,32 @@ pipeline {
     agent any
 
     environment {
+        GITHUB_USER = 'ujstor'
+        GITHUB_REPO = 'todo-list-app-django'
         DOCKER_HUB_USERNAME = 'ujstor'
         DOCKER_REPO_NAME = 'django_todolist'
+        BRANCH = 'master'
         VERSION_PART = 'Patch' // Patch, Minor, Major
+        DOCKER_JENKINS_CERDIDENTALS_ID = 'be9636c4-b828-41af-ad0b-46d4182dfb06'
         TAG = ''
-    } 
+    }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git(url: 'https://github.com/Ujstor/todo-list-app-django/', branch: env.BRANCH_NAME)
+                script {
+                    git(url: "https://github.com/${GITHUB_USER}/${GITHUB_REPO}/", branch: env.BRANCH_NAME)
+                }
             }
         }
 
-
         stage('Generate Docker Image Tag') {
             when {
-                expression { env.BRANCH_NAME == 'master' }
+                expression { env.BRANCH_NAME == env.BRANCH}
             }
             steps {
                 script {
-                    TAG = sh(script: "/var/lib/jenkins/scripts/docker_tag.sh $DOCKER_HUB_USERNAME $DOCKER_REPO_NAME $VERSION_PART", returnStdout: true).trim()
+                    TAG = sh(script: "${JENKINS_HOME}/scripts/docker_tag.sh $DOCKER_HUB_USERNAME $DOCKER_REPO_NAME $VERSION_PART", returnStdout: true).trim()
 
                     if (TAG) {
                         echo "Docker image tag generated successfully: $TAG"
@@ -35,9 +40,23 @@ pipeline {
             }
         }
 
+        stage('Docker Login') {
+            when {
+                expression { env.BRANCH_NAME == env.BRANCH }
+            }
+            steps {
+                script {
+
+                    withCredentials([usernamePassword(credentialsId: env.DOCKER_JENKINS_CERDIDENTALS_ID, passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                        sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+                    }
+                }
+            }
+        }
+
         stage('Build') {
             when {
-                expression { env.BRANCH_NAME == 'master' }
+                expression { env.BRANCH_NAME == env.BRANCH }
             }
             steps {
                 script {
@@ -48,7 +67,7 @@ pipeline {
 
         stage('Deploy') {
             when {
-                expression { env.BRANCH_NAME == 'master' }
+                expression { env.BRANCH_NAME == env.BRANCH }
             }
             steps {
                 script {
@@ -59,7 +78,7 @@ pipeline {
 
         stage('Environment Cleanup') {
             when {
-                expression { env.BRANCH_NAME == 'master' }
+                expression { env.BRANCH_NAME == env.BRANCH }
             }
             steps {
                 script {
